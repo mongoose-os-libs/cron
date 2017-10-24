@@ -1,0 +1,18 @@
+author: mongoose-os
+type: lib
+description: A Cron lib
+version: 1.0
+
+sources_removed:
+  - src
+includes:
+  - include
+config_schema:
+libs:
+  - origin: https://github.com/mongoose-os-libs/location
+
+tags:
+  - c
+  - core
+
+manifest_version: 2017-09-29
