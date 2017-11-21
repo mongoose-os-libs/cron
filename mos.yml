@@ -3,7 +3,7 @@ type: lib
 description: A Cron lib
 version: 1.0
 
-sources_removed:
+sources:
   - src
 includes:
   - include
