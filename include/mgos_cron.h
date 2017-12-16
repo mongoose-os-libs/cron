@@ -20,16 +20,19 @@ extern "C" {
 
 #define MGOS_INVALID_CRON_ID (0)
 
-/* Cron ID */
+/* Opaque type for the cron ID */
 typedef uintptr_t mgos_cron_id_t;
 
-/* Cron callback */
+/*
+ * Cron callback signature; `user_data` is a pointer given to
+ * `mgos_cron_add()`, and `id` is the id of the corresponding cron job.
+ */
 typedef void (*mgos_cron_callback_t)(void *user_data, mgos_cron_id_t id);
 
 /*
- * Adds cron entry with `expr`null-terminated string (should be no longer
- * that 256 bytes) and `cb` as a callback.
- * `user_data` is a parameter to pass to `cb`.
+ * Adds cron entry with the expression `expr` (a null-terminated string, should
+ * be no longer that 256 bytes) and `cb` as a callback.
+ * `user_data` is an arbitrary pointer which will be passed to `cb`.
  * Returns cron ID.
  */
 mgos_cron_id_t mgos_cron_add(const char *expr, mgos_cron_callback_t cb,
@@ -46,8 +49,6 @@ bool mgos_cron_is_expr_valid(const char *expr, const char **perr);
  * Removes cron entry with a given cron ID.
  */
 void mgos_cron_remove(mgos_cron_id_t id);
-
-bool mgos_cron_init(void);
 
 #ifdef __cplusplus
 }
