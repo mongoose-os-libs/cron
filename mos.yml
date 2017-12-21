@@ -10,6 +10,7 @@ includes:
 config_schema:
 libs:
   - origin: https://github.com/mongoose-os-libs/location
+  - origin: https://github.com/mongoose-os-libs/sntp
 
 tags:
   - c
