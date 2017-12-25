@@ -2,9 +2,12 @@
 
 ## Overview
 
-This library implement cron functionality. It supports classic cron expressions
-with additional field for the seconds, plus a few extras. We'll get back
-to the extras later, let's start with regular cron expressions.
+This library implement cron core functionality. See also:
+[crontab](https://github.com/mongoose-os-libs/crontab).
+
+This library supports classic cron expressions with additional field for the
+seconds, plus a few extras. We'll get back to the extras later, let's start
+with regular cron expressions.
 
 ### Classic cron expressions.
 
