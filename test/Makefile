@@ -1,6 +1,6 @@
 all: test test_ndebug
 
-INCDIRS = -I../src -I../include -I../../.. -I.
+INCDIRS = -I../src -I../include -I../../.. -I../../../frozen -I../../../mongoose -I.
 SOURCES = ../src/mgos_cron.c ../src/ccronexpr.c ../src/sunriset.c \
           ../../../common/cs_time.c \
           ../../../common/str_util.c ../../../common/mg_str.c \
