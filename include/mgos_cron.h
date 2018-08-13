@@ -31,6 +31,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -55,6 +56,11 @@ typedef void (*mgos_cron_callback_t)(void *user_data, mgos_cron_id_t id);
  */
 mgos_cron_id_t mgos_cron_add(const char *expr, mgos_cron_callback_t cb,
                              void *user_data);
+
+/*
+ * Calculate the next fire date after the specified date.
+ */
+time_t mgos_cron_get_next_invocation(mgos_cron_id_t id, time_t date);
 
 /*
  * Returns whether the given string is a valid cron expression or not. In case
