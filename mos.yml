@@ -15,5 +15,6 @@ libs:
 tags:
   - c
   - core
+  - docs:misc:cron
 
 manifest_version: 2017-09-29
