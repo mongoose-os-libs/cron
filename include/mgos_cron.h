@@ -16,14 +16,7 @@
  */
 
 /*
- * View this file on GitHub:
- * [mgos_cron.h](https://github.com/mongoose-os-libs/cron/blob/master/include/mgos_cron.h)
- *
- * This library implements cron core functionality; see also:
- * [crontab](https://mongoose-os.com/docs/api/mgos_crontab.h.html).
- *
- * See cron syntax explanation
- *[here](https://github.com/mongoose-os-libs/cron/blob/master/README.md).
+ * This library implements cron core functionality.
  */
 
 #ifndef CS_MOS_LIBS_CRON_SRC_MGOS_CRON_H_
