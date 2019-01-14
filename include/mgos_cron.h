@@ -63,6 +63,11 @@ time_t mgos_cron_get_next_invocation(mgos_cron_id_t id, time_t date);
 bool mgos_cron_is_expr_valid(const char *expr, const char **perr);
 
 /*
+ * Returns user data pointer associated with the given cron job id.
+ */
+void *mgos_cron_get_user_data(mgos_cron_id_t id);
+
+/*
  * Removes cron entry with a given cron ID.
  */
 void mgos_cron_remove(mgos_cron_id_t id);
