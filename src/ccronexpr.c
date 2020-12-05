@@ -484,7 +484,10 @@ static char *to_string(int num) {
   char *str = (char *) malloc(CRON_NUM_OF_DIGITS(num) + 1);
   if (!str) return NULL;
   int res = sprintf(str, "%d", num);
-  if (res < 0) return NULL;
+  if (res < 0) {
+    free(str);
+    return NULL;
+  }
   return str;
 }
 
