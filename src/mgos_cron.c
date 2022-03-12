@@ -400,7 +400,7 @@ static time_t s_cron_next(struct mgos_cron_entry *ce, time_t date) {
   abort();
 
 clean:
-  s_print_time(LL_INFO, "Next invocation", ret);
+  s_print_time(LL_DEBUG, "Next invocation", ret);
   LOG(LL_DEBUG, ("(after %d seconds)", (int) (ret - date)));
 
   return ret;
