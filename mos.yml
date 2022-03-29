@@ -11,6 +11,8 @@ config_schema:
 libs:
   - location: https://github.com/mongoose-os-libs/location
   - location: https://github.com/mongoose-os-libs/sntp
+cdefs:
+  CRON_USE_LOCAL_TIME: 1
 
 tags:
   - c
