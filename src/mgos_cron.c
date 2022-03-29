@@ -126,21 +126,21 @@ static void s_cron_entry_free(struct mgos_cron_entry *ce) {
       return;
 
     case MGOS_CRON_EXPR_TYPE_CCRONEXPR:
-      cron_expr_free(ce->expr.data.ccronexpr);
+      free(ce->expr.data.ccronexpr);
       ce->expr.data.ccronexpr = NULL;
       ce->expr.type = MGOS_CRON_EXPR_TYPE_NONE;
       return;
 
     case MGOS_CRON_EXPR_TYPE_RANDOM:
-      cron_expr_free(ce->expr.data.random.from);
+      free(ce->expr.data.random.from);
       ce->expr.data.random.from = NULL;
-      cron_expr_free(ce->expr.data.random.to);
+      free(ce->expr.data.random.to);
       ce->expr.data.random.to = NULL;
       ce->expr.type = MGOS_CRON_EXPR_TYPE_NONE;
       return;
 
     case MGOS_CRON_EXPR_TYPE_SUN:
-      cron_expr_free(ce->expr.data.sun.daybegin);
+      free(ce->expr.data.sun.daybegin);
       ce->expr.data.sun.daybegin = NULL;
       ce->expr.type = MGOS_CRON_EXPR_TYPE_NONE;
       return;
@@ -427,6 +427,11 @@ bool s_cron_schedule_next(struct mgos_cron_entry *ce) {
       /* ccronexpr failed to parse the expression */
       return false;
     }
+    if (prev_planned_time >= ce->planned_time) {
+      LOG(LL_WARN, ("next time %ld is before previous %ld",
+                    ce->planned_time, prev_planned_time));
+      return false;
+    }
     left_until_next = ((double) ce->planned_time - mg_time()) * 1000.0;
     if (left_until_next < 0.0) {
       ce->planned_time = mg_time();
@@ -574,8 +579,12 @@ static const char *s_cron_parse_expr_sun(const char *expr,
 
   /* Generate a regular cron expression for 00:00:00 at the specified days */
   mg_asprintf(&cronexpr, 0, "0 0 0%s", expr);
-  tgt->data.sun.daybegin = cron_parse_expr(cronexpr, &err);
-  if (tgt->data.sun.daybegin == NULL) {
+  cron_expr *res = (cron_expr *) malloc(sizeof(cron_expr));
+  cron_parse_expr(cronexpr, res, &err);
+  tgt->data.sun.daybegin = res;
+  if (err != NULL) {
+    tgt->data.sun.daybegin = NULL;
+    free(res);
     goto clean;
   }
 
@@ -616,13 +625,21 @@ static const char *s_cron_parse_expr(const char *expr,
         goto clean;
       }
 
-      tgt->data.random.from = cron_parse_expr(from, &err);
-      if (tgt->data.random.from == NULL) {
+      cron_expr *res = (cron_expr *) malloc(sizeof(cron_expr));
+      cron_parse_expr(from, res, &err);
+      tgt->data.random.from = res;
+      if (err != NULL) {
+        tgt->data.random.from = NULL;
+        free(res);
         goto clean;
       }
 
-      tgt->data.random.to = cron_parse_expr(to, &err);
-      if (tgt->data.random.to == NULL) {
+      res = (cron_expr *) malloc(sizeof(cron_expr));
+      cron_parse_expr(to, res, &err);
+      tgt->data.random.to = res;
+      if (err != NULL) {
+        tgt->data.random.to = NULL;
+        free(res);
         goto clean;
       }
     } else if ((prefix = SUNRISE_SPEC, prefix_len = strlen(prefix),
@@ -640,8 +657,12 @@ static const char *s_cron_parse_expr(const char *expr,
   } else {
     /* The expression is a standard cron expr, so hand it over to ccronexpr */
     tgt->type = MGOS_CRON_EXPR_TYPE_CCRONEXPR;
-    tgt->data.ccronexpr = cron_parse_expr(expr, &err);
-    if (tgt->data.ccronexpr == NULL) {
+    cron_expr *res = (cron_expr *) malloc(sizeof(cron_expr));
+    cron_parse_expr(expr, res, &err);
+    tgt->data.ccronexpr = res;
+    if (err != NULL) {
+      tgt->data.ccronexpr = NULL;
+      free(res);
       goto clean;
     }
   }
